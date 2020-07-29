@@ -1,7 +1,20 @@
 <template>
-  <div id="app">
-    <FullCalendar :options="calendarOptions" />
-  </div>
+  <app-container :is-loading="isLoading" top-nav-color="success" no-bars>
+    <template #top-nav>
+      <top-nav-link :to="{name: 'route1'}">route1</top-nav-link>
+      <top-nav-link :to="{name: 'route2'}">route2</top-nav-link>
+      <top-nav-link :to="{name: 'route3'}">route3</top-nav-link>
+      <top-nav-link :to="{name: 'route4'}">route4</top-nav-link>
+    </template>
+    <page>
+      <template #header>
+        <page-header title="Your page header title" />
+      </template>
+      <FullCalendar :options="calendarOptions" />
+    </page>
+
+    <your-footer />
+  </app-container>
 </template>
 
 <script>
