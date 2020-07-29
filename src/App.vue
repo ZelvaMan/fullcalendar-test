@@ -1,19 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <FullCalendar :options="calendarOptions" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// main.js
+import Vue from "vue";
+import VueAdminLte from "@keenmate/vue-adminlte";
+// import code of original (mostly) adminlte project
+import "@keenmate/vue-adminlte/src/vue-adminlte-setup";
+import JQuery from "jquery";
+Vue.use(VueAdminLte);
+import FullCalendar from "@fullcalendar/vue";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+window.jQuery = JQuery;
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    FullCalendar // make the <FullCalendar> tag available
+  },
+  data() {
+    return {
+      calendarOptions: {
+        plugins: [dayGridPlugin, interactionPlugin],
+        initialView: "dayGridMonth"
+      }
+    };
   }
-}
+};
 </script>
 
 <style>
