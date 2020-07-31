@@ -4,4 +4,4 @@
 - resource view (moznost pridat)
 - vertikalni dual list box vpravo (jmena + pocty     hodin-> aktualizuje se)
 - nazev eventu = pocet hodin
-- pridat event
+- pridat event pres select 
