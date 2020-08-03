@@ -12,11 +12,13 @@
     "@fullcalendar/daygrid": "^5.1.0",
     "@fullcalendar/interaction": "^5.1.0",
     "@fullcalendar/resource-timeline": "^5.1.0",
+    "@fullcalendar/timegrid": "^5.2.0",
     "@fullcalendar/vue": "^5.1.0",
     "@keenmate/vue-adminlte": "^0.17.0",
     "core-js": "^3.6.5",
     "fullcalendar-scheduler": "^5.1.0",
     "jquery": "^3.5.1",
+    "moment": "^2.27.0",
     "vue": "^2.6.11",
     "vue-fragment": "^1.5.1"
   },

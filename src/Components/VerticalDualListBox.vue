@@ -22,7 +22,7 @@
             type="button"
             class="btn btn-block text-center btn-outline-secondary d-flex"
             title="Move all"
-            v-on:native="allToDown"
+            v-on:click="allToDown"
           >
             <b class="text-center">\/</b>
           </button>
@@ -32,7 +32,7 @@
             type="button"
             class="btn btn-block text-center btn-outline-secondary d-flex"
             title="Remove all"
-            v-on:native="allToUp"
+            v-on:click="allToUp"
           >
             <b class="text-center">/\</b>
           </button>
