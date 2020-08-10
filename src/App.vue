@@ -7,8 +7,10 @@
           <full-calendar ref="fullcalendar" :options="this.calendarOptions" />
         </div>
         <div class="col-4">
-          <vertical-dual-list-box :up-list="this.upList" :down-list="this.downList"></vertical-dual-list-box>
-          <div class="card">
+          <card title="vertical dual list box" is-info>
+            <vertical-dual-list-box :up-list="this.upList" :down-list="this.downList"></vertical-dual-list-box>
+          </card>
+          <card title="slot min and max time">
             <div class="rm-2 lm-2">
               <div class="form-group">
                 <label class="lp-2">day start</label>
@@ -19,7 +21,26 @@
                 <input type="text" class="form-control" v-model.lazy="slotMaxTime" />
               </div>
             </div>
-          </div>
+          </card>
+          <card title="position selector">
+            <multiselect
+              :multiple="false"
+              :options="upList"
+              :close-on-select="true"
+              v-model="selectedResource"
+            ></multiselect>
+            <multiselect
+              :multiple="false"
+              :options="positions"
+              :close-on-select="true"
+              v-model="selectedPosition"
+            ></multiselect>
+            <button
+              class="btn btn-primary align-right"
+              type="button"
+              v-on:click="changePossition"
+            >change</button>
+          </card>
         </div>
       </div>
     </page>
@@ -49,6 +70,7 @@ import csLocale from "@fullcalendar/core/locales/cs";
 window.jQuery = JQuery;
 import moment from "moment";
 Vue.prototype.moment = moment;
+import Multiselect from "vue-multiselect";
 
 //local components
 import VerticalDualListBox from "./Components/VerticalDualListBox";
@@ -57,7 +79,8 @@ export default {
   name: "App",
   components: {
     FullCalendar, // make the <FullCalendar> tag available,
-    VerticalDualListBox
+    VerticalDualListBox,
+    Multiselect
   },
   data() {
     return {
@@ -66,7 +89,10 @@ export default {
       resources: [{}],
       resourcesColors: [],
       slotMinTime: "04:00",
-      slotMaxTime: "22:00"
+      slotMaxTime: "22:00",
+      selectedResource: "",
+      positions: ["chef", "pizza", "kp", "bar", "servis", "kitchen"],
+      selectedPosition: ""
     };
   },
   mounted() {
@@ -105,11 +131,12 @@ export default {
       var end = arg.end;
       var resorceEvents = calendarApi.getResourceById(resource.id).getEvents();
       calendarApi.unselect();
+      console.log(resource);
       if (!this.hourOccupied(resorceEvents, start, end)) {
         var eventId = this.createEventId(resource, start, end);
         var event = {
           id: eventId,
-          title: resource.title,
+          title: resource.id,
           start: start,
           end: end,
           resourceId: resource.id,
@@ -148,10 +175,10 @@ export default {
     generateResources() {
       var r = [];
       this.upList.forEach(x => {
-        r.push({ id: x, name: x, position: "Kitchen" });
+        r.push({ id: x, name: x, position: "kitchen" });
       });
       this.downList.forEach(x => {
-        r.push({ id: x, name: x, position: "Pizza" });
+        r.push({ id: x, name: x, position: "pizza" });
       });
       return r;
     },
@@ -169,6 +196,14 @@ export default {
     eventDropHandler(arg) {
       console.log("drop reverted");
       if (arg.newResource != arg.oldResource) arg.revert();
+    },
+    changePossition() {
+      this.resources.forEach(r => {
+        if (r.id == this.selectedResource) {
+          r.position = this.selectedPosition;
+          return;
+        }
+      });
     }
   },
   computed: {
@@ -176,6 +211,7 @@ export default {
       console.log("calendar options updated");
       return {
         schedulerLicenseKey: "CC-Attribution-NonCommercial-NoDerivatives",
+        slotDuration: "00:15",
         plugins: [
           dayGridPlugin,
           interactionPlugin,
@@ -186,7 +222,8 @@ export default {
         headerToolbar: {
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay"
+          right:
+            "resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth"
         },
         businessHours: {
           // days of week. an array of zero-based day of week integers (0=Sunday)
@@ -254,3 +291,5 @@ export default {
   margin-top: 60px;
 }
 </style>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
